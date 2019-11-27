@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { getUserMediaStream } from '../utils/getUserInput';
 import { CreateConvolver } from '../utils/createConvolver';
 import ShowerResponse from '../assets/ImpulseResponses/shower_response.wav';
+import Visualizer from '../Components/Visualizer';
 
 const ShowerPower = () => {
 
@@ -50,6 +51,8 @@ const ShowerPower = () => {
 
     const [reverbPreDelay, setReverbPreDelay] = useState(0);
     const delay = useRef();
+
+    const [analyser, setAnalyser] = useState()
 
 
     useEffect(() => {
@@ -156,6 +159,13 @@ const ShowerPower = () => {
         
     };
 
+    const setComponentAnalyser = (analyserNode) => {
+
+        analyserNode.fftSize = 256;
+
+        setAnalyser(analyserNode);
+    }
+
     const getContext = async () => {
 
         setAudioContext(!audioContext);
@@ -175,12 +185,14 @@ const ShowerPower = () => {
 
         setComponentCompression(context.createDynamicsCompressor());
 
-        setComponentDelay(context.createDelay())
+        setComponentDelay(context.createDelay());
 
-        setComponentEqualizer(context.createBiquadFilter(), context.createBiquadFilter(), context.createBiquadFilter())
+        setComponentEqualizer(context.createBiquadFilter(), context.createBiquadFilter(), context.createBiquadFilter());
+
+        setComponentAnalyser(context.createAnalyser())
     };
 
-    const engage = (engageDisengage) => (<div><button  className="input-button" onClick={engageDisengage}>{engaged ? `Off` : `On`}</button></div>)
+    const engage = (engageDisengage) => (<div><button className="engage-button" onClick={engageDisengage}>{engaged ? `Off` : `On`}</button></div>)
 
     const engageDisengage = () => {
 
@@ -191,7 +203,7 @@ const ShowerPower = () => {
             input.connect(panner.current);
             panner.current.connect(channelGain.current);
             channelGain.current.connect(dryGain.current);
-            dryGain.current.connect(output);
+            dryGain.current.connect(analyser);
             channelGain.current.connect(wetGain.current);
             wetGain.current.connect(compressor.current);
             compressor.current.connect(delay.current);
@@ -199,7 +211,8 @@ const ShowerPower = () => {
             reverb.current.connect(trebleEqualizer.current);
             trebleEqualizer.current.connect(midEqualizer.current);
             midEqualizer.current.connect(bassEqualizer.current);
-            bassEqualizer.current.connect(output);
+            bassEqualizer.current.connect(analyser);
+            analyser.connect(output);
 
         } else {
 
@@ -209,7 +222,7 @@ const ShowerPower = () => {
             panner.current.disconnect(channelGain.current);
 
             channelGain.current.disconnect(dryGain.current);
-            dryGain.current.disconnect(output);
+            dryGain.current.disconnect(analyser);
 
             channelGain.current.disconnect(wetGain.current);
             wetGain.current.disconnect(compressor.current);
@@ -218,7 +231,9 @@ const ShowerPower = () => {
             reverb.current.disconnect(trebleEqualizer.current);
             trebleEqualizer.current.disconnect(midEqualizer.current);
             midEqualizer.current.disconnect(bassEqualizer.current);
-            bassEqualizer.current.disconnect(output);
+            bassEqualizer.current.disconnect(analyser);
+
+            analyser.disconnect(output);        
         }
 
     };
@@ -298,11 +313,12 @@ const ShowerPower = () => {
                             {
                                 audioContext ? <p className="live">live</p> : <button className="input-button" onClick={getContext}>Get Input</button>
                             }
-                            <div className="engage-button">
-                                {
-                                    audioContext && engage(engageDisengage)
-                                }
-                            </div>
+                        </div>
+                        <div className="visualizer-container">
+                            {
+                                analyser && <Visualizer analyser={analyser}/>
+                            }
+                            
                         </div>
                         <div className="row control-panel">
                             <div className="col-1-of-3">
@@ -319,6 +335,11 @@ const ShowerPower = () => {
                                 <input type="range" name="knee" min="0" max="20" step="1" value={compKnee} onChange={handleCompKneeChange}></input>
                             </div>
                             <div className="col-1-of-3">
+                                <div>
+                                    {
+                                        audioContext && engage(engageDisengage)
+                                    }
+                                </div>
                                 <h2 className="effect-component-heading">Channel</h2>
                                     <p className="component-slider">Volume {gain}</p>
                                     <input type="range" value={gain} min="0" max="10" step="1" onChange={handleChannelGainChange}/>

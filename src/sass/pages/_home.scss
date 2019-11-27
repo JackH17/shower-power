@@ -23,8 +23,10 @@
     }
 
     &__context {
-
+        display: flex;
+        flex-direction: row;
         text-align: center;
+        justify-content: center;
     }
 }
 
@@ -40,7 +42,9 @@
 };
 
 .engage-button{
-    padding-top: 2rem;
+    padding: .4rem;
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
     text-align: center;
     text-decoration: none;
     font-family: 'Roboto Mono', monospace;
@@ -74,4 +78,15 @@
 .eq-headings{
     margin-top: .5rem;
     margin-bottom: 1rem; 
+}
+
+.visualizer-container{
+    justify-content: center;
+    text-align: center;
+    margin: 0 auto;
+    width: 80%;
+}
+
+.visualizer{
+    justify-content: center;
 }
