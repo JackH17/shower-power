@@ -434,14 +434,14 @@ const ShowerPowerDisplay = ({getContext, engageDisengage, handleChannelGainChang
                                         <Circle x={widthPercentage(33.5)} y={heightPercentage(87)} radius={widthPercentage(2)} fill="grey" draggable onDragMove={getCompressionDragMove} onDragEnd={getCompressionSpeed} dragBoundFunc={function(pos){return{x: this.absolutePosition().x, y: this.absolutePosition().y}}}/>
                                         <Circle x={widthPercentage(33.5)} y={heightPercentage(87)} radius={widthPercentage(1)} fill="black" draggable onDragMove={getCompressionDragMove} onDragEnd={getCompressionSpeed} dragBoundFunc={function(pos){return{x: this.absolutePosition().x, y: this.absolutePosition().y}}}/>
                                         <Line ref={compressionLine} x={widthPercentage(33.5)} y={heightPercentage(87)} points={[0,0,0,- widthPercentage(2)]} stroke={'black'} strokeWidth={5} closed={true} lineCap={"round"}/>
-                                    <Text text="SLOW" x={widthPercentage(40)} y={heightPercentage(85)} fontSize={widthPercentage(2)} fontFamily={'Major Mono Display'}/>
+                                    <Text text="SLOW" x={widthPercentage(38)} y={heightPercentage(85)} fontSize={widthPercentage(2)} fontFamily={'Major Mono Display'}/>
                                     <Text text="EQ BOOST" x={widthPercentage(60)} y={heightPercentage(73)} fontSize={widthPercentage(3)} fontFamily={'Major Mono Display'}/>
-                                    <Text text="NONE" x={widthPercentage(64)} y={heightPercentage(80)} fontSize={widthPercentage(2)} fontFamily={'Major Mono Display'}/>
-                                    <Text text="BASS" x={widthPercentage(56)} y={heightPercentage(86)} fontSize={widthPercentage(2)} fontFamily={'Major Mono Display'}/>
+                                    <Text text="NONE" x={widthPercentage(64.5)} y={heightPercentage(79.5)} fontSize={widthPercentage(1.5)} fontFamily={'Major Mono Display'}/>
+                                    <Text text="BASS" x={widthPercentage(59)} y={heightPercentage(86)} fontSize={widthPercentage(1.5)} fontFamily={'Major Mono Display'}/>
                                         <Circle x={widthPercentage(66.5)} y={heightPercentage(88)} radius={widthPercentage(2)} fill="grey" draggable onDragMove={getEQBoostDragMove} onDragEnd={getEQBoostSetting} dragBoundFunc={function(pos){return{x: this.absolutePosition().x, y: this.absolutePosition().y}}}/>
                                         <Circle x={widthPercentage(66.5)} y={heightPercentage(88)} radius={widthPercentage(1)} fill="black" draggable onDragMove={getEQBoostDragMove} onDragEnd={getEQBoostSetting} dragBoundFunc={function(pos){return{x: this.absolutePosition().x, y: this.absolutePosition().y}}}/>
                                         <Line ref={eqBoostLine} x={widthPercentage(66.5)} y={heightPercentage(88)} points={[0,0,0,- widthPercentage(2)]} stroke={'black'} strokeWidth={5} closed={true} lineCap={"round"}/>
-                                    <Text text="TREBLE" x={widthPercentage(73)} y={heightPercentage(86)} fontSize={widthPercentage(2)} fontFamily={'Major Mono Display'}/>
+                                    <Text text="TREBLE" x={widthPercentage(69.5)} y={heightPercentage(86)} fontSize={widthPercentage(1.5)} fontFamily={'Major Mono Display'}/>
 
                                     <Text text="Click To" x={widthPercentage(3)} y={heightPercentage(26)} fontSize={widthPercentage(1)} fontFamily={'Major Mono Display'} opacity={context ? 0 : 1}/>
                                     <Text text="Enable" x={widthPercentage(3)} y={heightPercentage(28)} fontSize={widthPercentage(1)} fontFamily={'Major Mono Display'} opacity={context ? 0 : 1}/>
