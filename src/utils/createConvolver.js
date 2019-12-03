@@ -8,7 +8,7 @@ const getArrayBuffer = async (impulse) => {
 };
 
 export const CreateConvolver = async (impulse, audioCTX) => {
-
+    
     const arrayBuffer = await getArrayBuffer(impulse, audioCTX);
 
     const reverb = await audioCTX.createConvolver();
