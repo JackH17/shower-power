@@ -233,8 +233,15 @@ const ShowerPower = () => {
             channelGain.current.disconnect(wetGain.current);
             wetGain.current.disconnect(compressor.current);
             compressor.current.disconnect(delay.current);
-            delay.current.disconnect(reverbOne.current);
+
+            delay.current.disconnect(reverbOneGain.current);
+            reverbOneGain.current.disconnect(reverbOne.current);
             reverbOne.current.disconnect(trebleEqualizer.current);
+
+            delay.current.disconnect(reverbTwoGain.current);
+            reverbTwoGain.current.disconnect(reverbTwo.current);
+            reverbTwo.current.disconnect(trebleEqualizer.current);
+
             trebleEqualizer.current.disconnect(bassEqualizer.current);
             bassEqualizer.current.disconnect(output);    
         }
