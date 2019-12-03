@@ -4,12 +4,10 @@ import { Stage, Layer, Rect, Circle, Line, Text, Image } from "react-konva";
 import useImage from 'use-image';
 import tileBackground from '../assets/SVGS/pink_tiled_background.svg'
 
-const ShowerPowerDisplay = ({getContext, engageDisengage, handleChannelGainChange, handleWetDryChange, handlePreDelayChange, handleCompChange, handleEQChange, chooseReverb}) => {
+const ShowerPowerDisplay = ({getContext, engageDisengage, handleChannelGainChange, handleWetDryChange, handlePreDelayChange, handleCompChange, handleEQChange, chooseReverb, audioContext}) => {
 
     const [stageWidth, setStageWidth] = useState(window.innerWidth);
     const [stageHeight, setStageHeight] = useState(window.innerHeight);
-
-    const [context, setContext] = useState(false)
 
     const [tiles] = useImage(tileBackground);
 
@@ -127,7 +125,7 @@ const ShowerPowerDisplay = ({getContext, engageDisengage, handleChannelGainChang
 
     const hadleEngaged = () => {
 
-        if(!context){
+        if(!audioContext){
             window.alert('You must enable User Audio before you can enable Audio effects')
             return ;
         }
@@ -145,7 +143,7 @@ const ShowerPowerDisplay = ({getContext, engageDisengage, handleChannelGainChang
 
     const getReverbAmount = () => {
 
-        if(!context){
+        if(!audioContext){
             window.alert('You must enable User Audio before you can enable Audio effects')
             return ;
         }
@@ -185,7 +183,7 @@ const ShowerPowerDisplay = ({getContext, engageDisengage, handleChannelGainChang
 
     const getVolumeAmount = () => {
 
-        if(!context){
+        if(!audioContext){
             window.alert('You must enable User Audio before you can enable Audio effects')
             return ;
         }
@@ -221,7 +219,7 @@ const ShowerPowerDisplay = ({getContext, engageDisengage, handleChannelGainChang
 
     const getWetDryAmount = () => {
 
-        if(!context){
+        if(!audioContext){
             window.alert('You must enable User Audio before you can enable Audio effects')
             return ;
         }
@@ -258,7 +256,7 @@ const ShowerPowerDisplay = ({getContext, engageDisengage, handleChannelGainChang
 
     const getCompressionSpeed = () => {
 
-        if(!context){
+        if(!audioContext){
             window.alert('You must enable User Audio before you can enable Audio effects')
             return ;
         }
@@ -294,7 +292,7 @@ const ShowerPowerDisplay = ({getContext, engageDisengage, handleChannelGainChang
 
     const getEQBoostSetting = () => {
 
-        if(!context){
+        if(!audioContext){
             window.alert('You must enable User Audio before you can enable Audio effects')
             return ;
         }
@@ -337,7 +335,7 @@ const ShowerPowerDisplay = ({getContext, engageDisengage, handleChannelGainChang
 
     const getPreDelayAmount = () => {
 
-        if(!context){
+        if(!audioContext){
             window.alert('You must enable User Audio before you can enable Audio effects')
             return ;
         }
@@ -374,11 +372,9 @@ const ShowerPowerDisplay = ({getContext, engageDisengage, handleChannelGainChang
     }
 
     const handleContext = () => {
-        if(context){
+        if(audioContext){
             return;
         }
-        
-        setContext(true);
         getContext();
     }
 
@@ -443,11 +439,11 @@ const ShowerPowerDisplay = ({getContext, engageDisengage, handleChannelGainChang
                                         <Line ref={eqBoostLine} x={widthPercentage(66.5)} y={heightPercentage(88)} points={[0,0,0,- widthPercentage(2)]} stroke={'black'} strokeWidth={5} closed={true} lineCap={"round"}/>
                                     <Text text="TREBLE" x={widthPercentage(69.5)} y={heightPercentage(86)} fontSize={widthPercentage(1.5)} fontFamily={'Major Mono Display'}/>
 
-                                    <Text text="Click To" x={widthPercentage(3)} y={heightPercentage(26)} fontSize={widthPercentage(1)} fontFamily={'Major Mono Display'} opacity={context ? 0 : 1}/>
-                                    <Text text="Enable" x={widthPercentage(3)} y={heightPercentage(28)} fontSize={widthPercentage(1)} fontFamily={'Major Mono Display'} opacity={context ? 0 : 1}/>
-                                        <Circle x={widthPercentage(7)} y={heightPercentage(35)} radius={widthPercentage(2)} fill="grey" onClick={handleContext} opacity={context ? 0 : 1}/>
-                                        <Circle x={widthPercentage(7)} y={heightPercentage(35)} radius={widthPercentage(1)} fill="black" onClick={handleContext} opacity={context ? 0 : 1}/>
-                                    <Text text="User Audio" x={widthPercentage(1)} y={heightPercentage(40)} fontSize={widthPercentage(2)} fontFamily={'Major Mono Display'} opacity={context ? 0 : 1}/>
+                                    <Text text="Click To" x={widthPercentage(3)} y={heightPercentage(26)} fontSize={widthPercentage(1)} fontFamily={'Major Mono Display'} opacity={audioContext ? 0 : 1}/>
+                                    <Text text="Enable" x={widthPercentage(3)} y={heightPercentage(28)} fontSize={widthPercentage(1)} fontFamily={'Major Mono Display'} opacity={audioContext ? 0 : 1}/>
+                                        <Circle x={widthPercentage(7)} y={heightPercentage(35)} radius={widthPercentage(2)} fill="grey" onClick={handleContext} opacity={audioContext ? 0 : 1}/>
+                                        <Circle x={widthPercentage(7)} y={heightPercentage(35)} radius={widthPercentage(1)} fill="black" onClick={handleContext} opacity={audioContext ? 0 : 1}/>
+                                    <Text text="User Audio" x={widthPercentage(1)} y={heightPercentage(40)} fontSize={widthPercentage(2)} fontFamily={'Major Mono Display'} opacity={audioContext ? 0 : 1}/>
                 </Layer>
             </Stage>
         </div>

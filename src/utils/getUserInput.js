@@ -13,8 +13,10 @@ const getStream = async () => {
         return userStream;
 
     } catch (error){
+
         window.alert(`Current browser not supported`);
-        return;
+        const userStream = { error }
+        return userStream;
     }
 
 }; 
@@ -31,6 +33,10 @@ const createMediaStreamAudioSourceNode = async (audioCTX, userStream) => {
 export const getUserMediaStream = async (audioCTX) => {
 
         const userStream =  await getStream();
+
+        if(userStream.error){
+            return userStream;
+        }
         
         const mediaStreamSourceNode = await createMediaStreamAudioSourceNode(audioCTX, userStream)
 

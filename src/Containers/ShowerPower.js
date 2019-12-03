@@ -130,11 +130,9 @@ const ShowerPower = () => {
         if(reverb === 'one'){
             setVerbOneGain(1);
             setVerbTwoGain(0);
-            console.log(reverb)
         } else if(reverb === 'two'){
             setVerbOneGain(0);
             setVerbTwoGain(1);
-            console.log(reverb)
         }
     }
 
@@ -164,8 +162,6 @@ const ShowerPower = () => {
         bass.frequency.value = 500;
         bass.gain.value = 1;
         bassEqualizer.current = bass;
-
-        console.log(trebleEqualizer)
     };
 
     const setComponentDelay = (delayNode) => {
@@ -174,15 +170,7 @@ const ShowerPower = () => {
         delay.current = delayNode;  
     };
 
-    const getContext = async () => {
-
-        const AudioContext = window.AudioContext || window.webkitAudioContext;
-        const context =  new AudioContext();
-
-        setOutput(context.destination);
-
-        const userMediaStreamNode = await getUserMediaStream(context);
-
+    const createAudioNodes = (context, userMediaStreamNode) => {
 
         setUserInputs(userMediaStreamNode, context.createGain(), context.createGain(), context.createGain(), context.createGain(), context.createGain());
 
@@ -195,6 +183,24 @@ const ShowerPower = () => {
         setComponentEqualizer(context.createBiquadFilter(), context.createBiquadFilter());
 
         setAudioContext(!audioContext);
+
+    }
+
+    const getContext = async () => {
+
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        const context =  new AudioContext();
+
+        setOutput(context.destination);
+
+        const userMediaStreamNode = await getUserMediaStream(context);
+
+        if(userMediaStreamNode.error){
+            return;
+        } else {
+            createAudioNodes(context, userMediaStreamNode);
+        }
+
     };
 
     const engageDisengage = () => {
@@ -295,7 +301,7 @@ const ShowerPower = () => {
     return (
 
         <div>
-            <ShowerPowerDisplay getContext={getContext} engageDisengage={engageDisengage} handleChannelGainChange={handleChannelGainChange} handleWetDryChange={handleWetDryChange} handlePreDelayChange={handlePreDelayChange} handleCompChange={handleCompChange} handleEQChange={handleEQChange} chooseReverb={chooseReverb}/>
+            <ShowerPowerDisplay getContext={getContext} engageDisengage={engageDisengage} handleChannelGainChange={handleChannelGainChange} handleWetDryChange={handleWetDryChange} handlePreDelayChange={handlePreDelayChange} handleCompChange={handleCompChange} handleEQChange={handleEQChange} chooseReverb={chooseReverb} audioContext={audioContext}/>
         </div>
     )
 }
