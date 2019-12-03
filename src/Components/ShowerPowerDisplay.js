@@ -48,6 +48,8 @@ const ShowerPowerDisplay = ({getContext, engageDisengage, handleChannelGainChang
     const stageRefOne = useRef();
     const engagedLight = useRef();
 
+    const [engagedHelper, setEngagedHelper] = useState(false)
+
 
     const updateWidthAndHeight = () => {
 
@@ -93,6 +95,7 @@ const ShowerPowerDisplay = ({getContext, engageDisengage, handleChannelGainChang
         handleChannelGainChange(volumeAmount)
 
     }, [volumeAmount]);
+    
 
     useEffect(() => {
 
@@ -321,9 +324,9 @@ const ShowerPowerDisplay = ({getContext, engageDisengage, handleChannelGainChang
     const getEQBoostDragMove = (e) => {
         const difference = (e.currentTarget.attrs.x - e.evt.clientX)
 
-        if(difference >= 90 || difference > 180){
+        if(difference >= 45 || difference > 90){
             setEQBoostDragAmount(90)
-        } else if(difference <= -90 || difference < -180){
+        } else if(difference <= -45 || difference < -90){
             setEQBoostDragAmount(-90)
         } else {
             setEQBoostDragAmount(0)
@@ -379,6 +382,14 @@ const ShowerPowerDisplay = ({getContext, engageDisengage, handleChannelGainChang
         getContext();
     }
 
+    const handleEngagedMouseEnter = () => {
+        setEngagedHelper(true)
+    }
+
+    const handleEngagedMouseLeave = () => {
+        setEngagedHelper(false)
+    }
+
     return (
         <div>
             <Stage ref={stageRefOne} width={stageWidth} height={stageHeight}>
@@ -391,17 +402,18 @@ const ShowerPowerDisplay = ({getContext, engageDisengage, handleChannelGainChang
                                         <Circle ref={engagedLight} x={widthPercentage(50.5)} y={heightPercentage(12)} radius={widthPercentage(3)} fill="red" shadowBlur={7} opacity={engaged ? 0 : 1}/>
                                         <Circle x={widthPercentage(50.5)} y={heightPercentage(12)} radius={widthPercentage(5)} fill="black" shadowBlur={7} opacity={engaged ? 0 : 1}/>
                                     <Text text="ON" x={widthPercentage(39)} y={heightPercentage(56)} fontSize={widthPercentage(3)} fontFamily={'Major Mono Display'}/>
-                                        <Circle x={widthPercentage(50.5)} y={heightPercentage(60)} radius={widthPercentage(2)} fill="grey" onClick={hadleEngaged}/>
-                                        <Circle x={widthPercentage(50.5)} y={heightPercentage(60)} radius={widthPercentage(1)} fill="black" onClick={hadleEngaged}/>
+                                        <Circle x={widthPercentage(50.5)} y={heightPercentage(60)} radius={widthPercentage(2)} fill="grey" onClick={hadleEngaged} onMouseEnter={handleEngagedMouseEnter} onMouseLeave={handleEngagedMouseLeave}/>
+                                        <Circle x={widthPercentage(50.5)} y={heightPercentage(60)} radius={widthPercentage(1)} fill="black" onClick={hadleEngaged} onMouseEnter={handleEngagedMouseEnter} onMouseLeave={handleEngagedMouseLeave}/>
                                         <Line ref={engagedLine} x={widthPercentage(50.5)} y={heightPercentage(60)} points={[0,0,0,- widthPercentage(2)]} stroke={'black'} strokeWidth={5} closed={true} lineCap={"round"}/>  
                                     <Text text="OFF" x={widthPercentage(57)} y={heightPercentage(56)} fontSize={widthPercentage(3)} fontFamily={'Major Mono Display'}/>
+                                    <Text text='Click To Engage' x={widthPercentage(50)} y={heightPercentage(65)} fontSize={widthPercentage(1)} fontFamily={'Major Mono Display'} opacity={engagedHelper && !engaged ? 1 : 0}/>
                                     <Text text="WET" x={widthPercentage(3)} y={heightPercentage(56)} fontSize={widthPercentage(3)} fontFamily={'Major Mono Display'}/>
                                         <Circle ref={wetDry} x={widthPercentage(15)} y={heightPercentage(60)} radius={widthPercentage(3)} fill="grey" draggable onDragMove={getWetDryDragMove} onDragEnd={getWetDryAmount} dragBoundFunc={function(pos){return{x: this.absolutePosition().x, y: this.absolutePosition().y}}}/> 
                                         <Circle x={widthPercentage(15)} y={heightPercentage(60)} radius={widthPercentage(1)} fill="black" draggable onDragMove={getWetDryDragMove} onDragEnd={getWetDryAmount} dragBoundFunc={function(pos){return{x: this.absolutePosition().x, y: this.absolutePosition().y}}}/>
                                         <Line ref={wetDryLine} x={widthPercentage(15)} y={heightPercentage(60)} points={[0,0,0,- widthPercentage(3)]} stroke={'black'} strokeWidth={5} closed={true} lineCap={"round"}/>
                                     <Text text="DRY" x={widthPercentage(21)} y={heightPercentage(56)} fontSize={widthPercentage(3)} fontFamily={'Major Mono Display'}/>
                                     <Text text="-60DB" x={widthPercentage(68)} y={heightPercentage(56)} fontSize={widthPercentage(3)} fontFamily={'Major Mono Display'}/>
-                                        <Circle ref={volume} x={widthPercentage(85)} y={heightPercentage(60)}  radius={widthPercentage(3)} fill="grey" draggable ondragMove={getVolumeDragMove} onDragEnd={getVolumeAmount} dragBoundFunc={function(pos){return{x: this.absolutePosition().x, y: this.absolutePosition().y}}}/>
+                                        <Circle ref={volume} x={widthPercentage(85)} y={heightPercentage(60)}  radius={widthPercentage(3)} fill="grey" draggable onDragMove={getVolumeDragMove} onDragEnd={getVolumeAmount} dragBoundFunc={function(pos){return{x: this.absolutePosition().x, y: this.absolutePosition().y}}}/>
                                         <Circle x={widthPercentage(85)} y={heightPercentage(60)} radius={widthPercentage(1)} fill="black" draggable onDragMove={getVolumeDragMove} onDragEnd={getVolumeAmount} dragBoundFunc={function(pos){return{x: this.absolutePosition().x, y: this.absolutePosition().y}}}/>
                                         <Line ref={volumeLine} x={widthPercentage(85)} y={heightPercentage(60)} points={[0,0,0,- widthPercentage(3)]} stroke={'black'} strokeWidth={5} closed={true} lineCap={"round"}/>
                                     <Text text="0DB" x={widthPercentage(91)} y={heightPercentage(56)} fontSize={widthPercentage(3)} fontFamily={'Major Mono Display'}/> 
@@ -425,16 +437,16 @@ const ShowerPowerDisplay = ({getContext, engageDisengage, handleChannelGainChang
                                     <Text text="SLOW" x={widthPercentage(40)} y={heightPercentage(85)} fontSize={widthPercentage(2)} fontFamily={'Major Mono Display'}/>
                                     <Text text="EQ BOOST" x={widthPercentage(60)} y={heightPercentage(73)} fontSize={widthPercentage(3)} fontFamily={'Major Mono Display'}/>
                                     <Text text="NONE" x={widthPercentage(64)} y={heightPercentage(80)} fontSize={widthPercentage(2)} fontFamily={'Major Mono Display'}/>
-                                    <Text text="BASS" x={widthPercentage(56)} y={heightPercentage(85)} fontSize={widthPercentage(2)} fontFamily={'Major Mono Display'}/>
+                                    <Text text="BASS" x={widthPercentage(56)} y={heightPercentage(86)} fontSize={widthPercentage(2)} fontFamily={'Major Mono Display'}/>
                                         <Circle x={widthPercentage(66.5)} y={heightPercentage(88)} radius={widthPercentage(2)} fill="grey" draggable onDragMove={getEQBoostDragMove} onDragEnd={getEQBoostSetting} dragBoundFunc={function(pos){return{x: this.absolutePosition().x, y: this.absolutePosition().y}}}/>
                                         <Circle x={widthPercentage(66.5)} y={heightPercentage(88)} radius={widthPercentage(1)} fill="black" draggable onDragMove={getEQBoostDragMove} onDragEnd={getEQBoostSetting} dragBoundFunc={function(pos){return{x: this.absolutePosition().x, y: this.absolutePosition().y}}}/>
                                         <Line ref={eqBoostLine} x={widthPercentage(66.5)} y={heightPercentage(88)} points={[0,0,0,- widthPercentage(2)]} stroke={'black'} strokeWidth={5} closed={true} lineCap={"round"}/>
-                                    <Text text="TREBLE" x={widthPercentage(73)} y={heightPercentage(85)} fontSize={widthPercentage(2)} fontFamily={'Major Mono Display'}/>
+                                    <Text text="TREBLE" x={widthPercentage(73)} y={heightPercentage(86)} fontSize={widthPercentage(2)} fontFamily={'Major Mono Display'}/>
 
                                     <Text text="Click To" x={widthPercentage(3)} y={heightPercentage(26)} fontSize={widthPercentage(1)} fontFamily={'Major Mono Display'} opacity={context ? 0 : 1}/>
                                     <Text text="Enable" x={widthPercentage(3)} y={heightPercentage(28)} fontSize={widthPercentage(1)} fontFamily={'Major Mono Display'} opacity={context ? 0 : 1}/>
-                                    <Circle x={widthPercentage(7)} y={heightPercentage(35)} radius={widthPercentage(2)} fill="grey" onClick={handleContext} opacity={context ? 0 : 1}/>
-                                    <Circle x={widthPercentage(7)} y={heightPercentage(35)} radius={widthPercentage(1)} fill="black" onClick={handleContext} opacity={context ? 0 : 1}/>
+                                        <Circle x={widthPercentage(7)} y={heightPercentage(35)} radius={widthPercentage(2)} fill="grey" onClick={handleContext} opacity={context ? 0 : 1}/>
+                                        <Circle x={widthPercentage(7)} y={heightPercentage(35)} radius={widthPercentage(1)} fill="black" onClick={handleContext} opacity={context ? 0 : 1}/>
                                     <Text text="User Audio" x={widthPercentage(1)} y={heightPercentage(40)} fontSize={widthPercentage(2)} fontFamily={'Major Mono Display'} opacity={context ? 0 : 1}/>
                 </Layer>
             </Stage>
