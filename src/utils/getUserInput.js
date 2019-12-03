@@ -10,10 +10,10 @@ const getStream = async () => {
     try {
         const userStream =  await navigator.mediaDevices.getUserMedia({audio: constraints});  
     
-
         return userStream;
+
     } catch (error){
-        console.log(`Error:`, error)
+        window.alert(`Current browser not supported`)
     }
 
 }; 

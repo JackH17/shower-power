@@ -178,12 +178,19 @@ const ShowerPower = () => {
 
         setAudioContext(!audioContext);
 
-        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        const AudioContext = window.AudioContxt || window.webkitAudioContxt;
+
+        console.log(AudioContext)
+
+
         const context =  new AudioContext();
+
 
         setOutput(context.destination);
 
         const userMediaStreamNode = await getUserMediaStream(context);
+
+        console.log(userMediaStreamNode)
 
         setUserInputs(userMediaStreamNode, context.createGain(), context.createGain(), context.createGain(), context.createGain(), context.createGain());
 
