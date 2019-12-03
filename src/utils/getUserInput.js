@@ -13,7 +13,8 @@ const getStream = async () => {
         return userStream;
 
     } catch (error){
-        window.alert(`Current browser not supported`)
+        window.alert(`Current browser not supported`);
+        return;
     }
 
 }; 
