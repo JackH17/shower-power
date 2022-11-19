@@ -10,7 +10,7 @@
     "react-konva": "^16.10.1-0",
     "react-rotary-knob": "^1.1.7",
     "react-router-dom": "^5.1.2",
-    "react-scripts": "3.2.0",
+    "react-scripts": "5.0.1",
     "use-image": "^1.0.5"
   },
   "scripts": {
